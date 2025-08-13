@@ -7,7 +7,7 @@ export default function RootLayout({ children }) {
           dangerouslySetInnerHTML={{
             __html: `
               var _vwo_code=(function(){
-                var account_id=${process.env.NEXT_PUBLIC_VWO_ACCOUNT_ID},
+                var account_id=1130496,
                 settings_tolerance=2000,
                 library_tolerance=2500,
                 use_existing_jquery=false,
