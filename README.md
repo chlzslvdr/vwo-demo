@@ -24,6 +24,10 @@ It contains multiple **testable elements** so you can run variations and learn C
 git clone git@github.com:chlzslvdr/vwo-demo.git
 cd vwo-demo
 ```
+Add in `.env`:
+```
+NEXT_PUBLIC_VWO_ACCOUNT_ID=
+```
 
 ### 2. Install dependencies
 ```bash
