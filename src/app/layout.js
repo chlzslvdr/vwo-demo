@@ -1,9 +1,8 @@
-import './globals.css';
-
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
+        {/* VWO SmartCode directly in the server-rendered head */}
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -20,9 +19,19 @@ export default function RootLayout({ children }) {
                   hide_element:'body',
                   /* DO NOT EDIT BELOW THIS LINE */
                   f:false,d:document,
-                  // rest of VWO's code...
+                  t: function() {
+                    var f=this;
+                    function d() {
+                      var a=document.createElement('script');
+                      a.src='https://dev.visualwebsiteoptimizer.com/j.php?a='+account_id+'&u='+encodeURIComponent(document.URL)+'&r='+Math.random();
+                      a.type='text/javascript';a.innerText;a.onerror=function(){};
+                      document.getElementsByTagName('head')[0].appendChild(a);
+                    }
+                    setTimeout(d, 0);
+                  }
                 };
               }());
+              _vwo_code.t();
             `
           }}
         />
