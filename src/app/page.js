@@ -50,7 +50,7 @@ export default function Home() {
       {/* Testimonial Section */}
       <section style={{ padding: '3rem 2rem', backgroundColor: '#ffffff', textAlign: 'center' }}>
         <blockquote style={{ fontStyle: 'italic', fontSize: '1.1rem', maxWidth: '700px', margin: '0 auto' }}>
-          "This tool completely changed how I work. My productivity has doubled!"
+          &ldquo;This tool completely changed how I work. My productivity has doubled!&ldquo;
         </blockquote>
         <p style={{ marginTop: '1rem', fontWeight: 'bold' }}>— Alex Johnson</p>
       </section>
