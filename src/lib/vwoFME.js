@@ -5,8 +5,7 @@ export async function getVwoClient() {
   if (client) return client;
 
   client = await init({
-    accountId: process.env.NEXT_PUBLIC_VWO_ACCOUNT_ID,
-    sdkKey: process.env.NEXT_PUBLIC_VWO_SDK_KEY
+    accountId: process.env.NEXT_PUBLIC_VWO_ACCOUNT_ID
   });
 
   return client;
