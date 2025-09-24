@@ -1,4 +1,5 @@
 import { VWOScript } from "vwo-smartcode-nextjs";
+import { ExperimentsProvider } from "../lib/ExperimentsProvider";
 
 export const metadata = {
   title: "VWO Demo",
@@ -9,10 +10,11 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
-        {/* Add SmartCode inline in SSR */}
         <VWOScript accountId={process.env.NEXT_PUBLIC_VWO_ACCOUNT_ID} />
       </head>
-      <body>{children}</body>
+      <body>
+        <ExperimentsProvider>{children}</ExperimentsProvider>
+      </body>
     </html>
   );
 }
