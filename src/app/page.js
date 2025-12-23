@@ -1,10 +1,6 @@
 "use client";
 
-import { useFlag } from "../lib/ExperimentsProvider";
-
 export default function Home() {
-  const isCtaTest = useFlag("cta_test");
-
   return (
     <div
       style={{
@@ -40,38 +36,21 @@ export default function Home() {
           easy-to-use, lightning-fast, and secure tool.
         </p>
 
-        {/* Test: CTA Button (feature-flagged with VWO) */}
-        {isCtaTest ? (
-          <button
-            style={{
-              padding: "1rem 2rem",
-              fontSize: "1.1rem",
-              backgroundColor: "#28a745", // Variation CTA
-              color: "#fff",
-              border: "none",
-              borderRadius: "6px",
-              cursor: "pointer",
-            }}
-            onClick={() => alert("Variation CTA Clicked!")}
-          >
-            Start Free Trial
-          </button>
-        ) : (
-          <button
-            style={{
-              padding: "1rem 2rem",
-              fontSize: "1.1rem",
-              backgroundColor: "#0070f3", // Control CTA
-              color: "#fff",
-              border: "none",
-              borderRadius: "6px",
-              cursor: "pointer",
-            }}
-            onClick={() => alert("Control CTA Clicked!")}
-          >
-            Get Started
-          </button>
-        )}
+        {/* Test: CTA Button color/text */}
+        <button
+          style={{
+            padding: "1rem 2rem",
+            fontSize: "1.1rem",
+            backgroundColor: "#0070f3",
+            color: "#fff",
+            border: "none",
+            borderRadius: "6px",
+            cursor: "pointer",
+          }}
+          onClick={() => alert("Top Button Clicked!")}
+        >
+          Get Started
+        </button>
       </header>
 
       {/* Features Section */}
