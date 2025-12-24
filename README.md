@@ -1,6 +1,6 @@
 # VWO A/B Testing Practice Site (Next.js App Router)
 
-This is a dummy landing page built with **Next.js App Router** for practicing **A/B testing** with [Visual Website Optimizer (VWO)](https://vwo.com/).  
+This is a dummy landing page built with **Next.js App Router** for experimenting with [Visual Website Optimizer (VWO)](https://vwo.com).  
 It contains multiple **testable elements** so you can run variations and learn CRO (Conversion Rate Optimization) basics.
 
 ## Features
@@ -16,6 +16,7 @@ It contains multiple **testable elements** so you can run variations and learn C
   - Footer text
 - Simple, responsive layout for quick deployment
 - Easy integration with VWO SmartCode
+- [Flags SDK](https://flags-sdk.dev) - feature flags toolkit
 
 ## Getting Started
 
@@ -26,7 +27,9 @@ cd vwo-demo
 ```
 Add in `.env`:
 ```
-NEXT_PUBLIC_VWO_ACCOUNT_ID=
+NEXT_PUBLIC_BASE_URL=
+VWO_ACCOUNT_ID=
+VWO_SDK_KEY=
 ```
 
 ### 2. Install dependencies
