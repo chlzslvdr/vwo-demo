@@ -125,6 +125,7 @@ export default function HomeClient({ ctaText, showDiscount, isNewCTAEnabled }) {
           Ready to Get Started?
         </h2>
         <button
+          id="button-bottom-cta"
           style={{
             padding: "1rem 2rem",
             fontSize: "1.1rem",
@@ -140,7 +141,7 @@ export default function HomeClient({ ctaText, showDiscount, isNewCTAEnabled }) {
         </button>
 
         {isNewCTAEnabled && showDiscount && (
-          <p style={{ marginTop: "1rem", color: "green" }}>
+          <p id="discount-label" style={{ marginTop: "1rem", color: "green" }}>
             🎉 Limited-time discount available!
           </p>
         )}
