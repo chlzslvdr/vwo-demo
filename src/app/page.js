@@ -7,7 +7,6 @@ export default async function Page() {
   const cookieStore = await cookies();
   let userId = cookieStore.get("vwo_user_id")?.value;
 
-  // If cookie is missing, fetch it from Route Handler
   if (!userId) {
     try {
       const res = await fetch(
@@ -16,55 +15,32 @@ export default async function Page() {
       );
       const data = await res.json();
       userId = data?.userId;
-    } catch (err) {
-      console.warn("Failed to get user ID from API");
+    } catch {
+      userId = crypto.randomUUID();
     }
   }
 
-  if (!userId || typeof userId !== "string") {
-    console.warn("VWO userId missing or invalid, generating fallback");
-    userId = crypto.randomUUID();
-  }
-
   const userContext = {
-    userId: String(userId),
+    id: String(userId),
   };
 
   let isNewCTAEnabled = false;
   let ctaText = "Get Started";
   let showDiscount = false;
 
-  // ---------------- DEV MODE ----------------
   if (process.env.NODE_ENV === "development") {
-    const flag = {
-      isEnabled: () => true,
-      getVariable: (key, defaultValue) => {
-        if (key === "cta_text") return "Get Started Now!";
-        if (key === "show_discount") return true;
-        return defaultValue;
-      },
-    };
-
-    isNewCTAEnabled = flag.isEnabled();
-    ctaText = flag.getVariable("cta_text", ctaText);
-    showDiscount = flag.getVariable("show_discount", showDiscount);
-  }
-
-  // ---------------- PROD MODE ----------------
-  else {
+    isNewCTAEnabled = true;
+    ctaText = "Get Started Now!";
+    showDiscount = true;
+  } else {
     try {
       const vwo = await getVwoClient();
 
-      if (!userContext.userId) {
-        throw new Error("VWO skipped: invalid userId");
-      }
-
-      const flag = vwo.getFlag("new_cta_experience", userContext);
+      const flag = await vwo.getFlag("new_cta_experience", userContext);
 
       console.log("VWO FLAG DEBUG:", {
         enabled: flag?.isEnabled?.(),
-        variables: flag,
-        userId: userContext.userId,
+        userId: userContext.id,
       });
 
       isNewCTAEnabled = flag?.isEnabled?.() ?? false;
