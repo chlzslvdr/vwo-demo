@@ -18,7 +18,8 @@ export default async function Page() {
     }
   }
 
-  const userContext = { id: userId };
+  // const userContext = { id: userId };
+  const userContext = { userId: crypto.randomUUID() };
 
   let isNewCTAEnabled = false;
   let ctaText = "Get Started";
@@ -40,6 +41,7 @@ export default async function Page() {
     try {
       const vwo = await getVwoClient();
       const flag = vwo.getFlag("new_cta_experience", userContext);
+      console.log("VWO FLAG DEBUG:", flag);
 
       isNewCTAEnabled = flag?.isEnabled?.() ?? false;
       ctaText = flag?.getVariable?.("cta_text", ctaText) ?? ctaText;
