@@ -2,10 +2,10 @@ import { flag } from "flags/next";
 import { getVwoClient } from "@/lib/vwoFME";
 
 export const newCTAExperience = flag({
-  key: "new_cta_experience",
+  key: "newCtaExperience",
   async decide({ context }) {
     const vwo = await getVwoClient();
-    const vwoFlag = vwo.getFlag("new_cta_experience", context);
+    const vwoFlag = vwo.getFlag("newCtaExperience", context);
 
     return {
       enabled: vwoFlag.isEnabled(),

@@ -36,7 +36,7 @@ export default async function Page() {
     try {
       const vwo = await getVwoClient();
 
-      const flag = await vwo.getFlag("new_cta_experience", userContext);
+      const flag = await vwo.getFlag("newCtaExperience", userContext);
 
       console.log("VWO FLAG DEBUG:", {
         enabled: flag?.isEnabled?.(),
