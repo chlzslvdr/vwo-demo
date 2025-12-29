@@ -37,19 +37,7 @@ VWO_SDK_KEY=
 npm install
 ```
 
-### 3. Add VWO SmartCode
-Open `app/layout.js` and paste your VWO SmartCode inside the `<head>` tag:
-```jsx
-<script
-  dangerouslySetInnerHTML={{
-    __html: `/* Paste your exact VWO SmartCode here */`
-  }}
-/>
-```
-
-For SPA compatibility in Next.js, ensure `is_spa: 1` is set in the SmartCode.
-
-### 4. Run locally
+### 3. Run locally
 ```bash
 npm run dev
 ```
