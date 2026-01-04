@@ -1,6 +1,36 @@
 "use client";
 
-export default function HomeClient({ ctaText, showDiscount, isNewCTAEnabled }) {
+import { useEffect } from "react";
+
+export default function HomeClient({
+  userContext,
+  ctaText,
+  showDiscount,
+  isNewCTAEnabled,
+}) {
+  useEffect(() => {
+    if (!userContext?.id) return;
+
+    if (typeof window === "undefined") return;
+
+    const track = () => {
+      if (window.VWO?.event?.track) {
+        window.VWO.event.track("pageVisits", userContext);
+      }
+    };
+
+    track();
+
+    const interval = setInterval(() => {
+      if (window.VWO?.event?.track) {
+        window.VWO.event.track("pageVisits", userContext);
+        clearInterval(interval);
+      }
+    }, 300);
+
+    return () => clearInterval(interval);
+  }, [userContext]);
+
   return (
     <div
       style={{

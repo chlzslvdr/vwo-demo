@@ -54,6 +54,7 @@ export default async function Page() {
 
   return (
     <HomeClient
+      userContext={userContext}
       isNewCTAEnabled={isNewCTAEnabled}
       ctaText={ctaText}
       showDiscount={showDiscount}
