@@ -9,17 +9,17 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "dotenv": "17.2.3",
-    "flags": "4.0.2",
-    "next": "16.1.1",
-    "react": "19.2.3",
-    "react-dom": "19.2.3",
-    "vwo-fme-node-sdk": "1.35.0",
+    "dotenv": "17.3.1",
+    "flags": "4.0.3",
+    "next": "16.1.6",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "vwo-fme-node-sdk": "1.40.1",
     "vwo-smartcode-nextjs": "1.4.2"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "3.3.3",
-    "eslint": "9.39.2",
-    "eslint-config-next": "16.1.1"
+    "@eslint/eslintrc": "3.3.4",
+    "eslint": "10.0.2",
+    "eslint-config-next": "16.1.6"
   }
 }
