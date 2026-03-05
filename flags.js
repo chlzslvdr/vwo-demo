@@ -9,7 +9,7 @@ export const newCTAExperience = flag({
 
     return {
       enabled: vwoFlag.isEnabled(),
-      ctaText: vwoFlag.getVariable("cta_text", "Default CTA"),
+      ctaText: vwoFlag.getVariable("cta_text", "Launch My Trial"),
       showDiscount: vwoFlag.getVariable("show_discount", false),
     };
   },
