@@ -17,6 +17,7 @@ It contains multiple **testable elements** so you can run variations and learn C
 - Simple, responsive layout for quick deployment
 - Easy integration with VWO SmartCode
 - [Flags SDK](https://flags-sdk.dev) - feature flags toolkit
+- [Contentful VWO Integration](https://www.contentful.com/marketplace/vwo)
 
 ## Getting Started
 
@@ -30,6 +31,8 @@ Add in `.env`:
 NEXT_PUBLIC_BASE_URL=
 VWO_ACCOUNT_ID=
 VWO_SDK_KEY=
+CONTENTFUL_SPACE_ID=
+CONTENTFUL_DELIVERY_TOKEN=
 ```
 
 ### 2. Install dependencies

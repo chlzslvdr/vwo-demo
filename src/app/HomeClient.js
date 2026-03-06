@@ -7,6 +7,7 @@ export default function HomeClient({
   ctaText,
   showDiscount,
   isNewCTAEnabled,
+   headline,
 }) {
   useEffect(() => {
     if (!userContext?.id) return;
@@ -49,8 +50,8 @@ export default function HomeClient({
         }}
       >
         {/* Test: Headline text */}
-        <h1 style={{ fontSize: "2.5rem", marginBottom: "1rem" }}>
-          Boost Your Productivity Today
+        <h1 id="headline" style={{ fontSize: "2.5rem", marginBottom: "1rem" }}>
+          {headline}
         </h1>
 
         {/* Test: Subheading text */}

@@ -1,5 +1,6 @@
 import HomeClient from "./HomeClient";
 import { getVwoClient } from "@/lib/vwoFME";
+import { contentfulClient } from "@/lib/contentful";
 import { cookies } from "next/headers";
 import crypto from "crypto";
 
@@ -20,12 +21,35 @@ export default async function Page() {
     }
   }
 
-  const userContext = {
-    id: String(userId),
-  };
+  const userContext = { id: String(userId) };
+
+  /* -------------------------
+     FETCH CONTENTFUL CONTENT
+  --------------------------*/
+
+  let headline = "Welcome";
+  let ctaText = "Get Started";
+
+  try {
+    const entries = await contentfulClient.getEntries({
+      content_type: "landingPage",
+      limit: 1,
+    });
+
+    if (entries.items.length) {
+      const fields = entries.items[0].fields;
+      headline = fields.headline ?? headline;
+      ctaText = fields.ctaText ?? ctaText;
+    }
+  } catch (err) {
+    console.warn("Contentful fetch failed", err);
+  }
+
+  /* -------------------------
+     VWO FEATURE FLAG
+  --------------------------*/
 
   let isNewCTAEnabled = false;
-  let ctaText = "Get Started";
   let showDiscount = false;
 
   if (process.env.NODE_ENV === "development") {
@@ -35,7 +59,6 @@ export default async function Page() {
   } else {
     try {
       const vwo = await getVwoClient();
-
       const flag = await vwo.getFlag("newCtaExperience", userContext);
 
       console.log("VWO FLAG DEBUG:", {
@@ -44,7 +67,9 @@ export default async function Page() {
       });
 
       isNewCTAEnabled = flag?.isEnabled?.() ?? false;
+
       ctaText = flag?.getVariable?.("cta_text", ctaText) ?? ctaText;
+
       showDiscount =
         flag?.getVariable?.("show_discount", showDiscount) ?? showDiscount;
     } catch (err) {
@@ -55,6 +80,7 @@ export default async function Page() {
   return (
     <HomeClient
       userContext={userContext}
+      headline={headline}
       isNewCTAEnabled={isNewCTAEnabled}
       ctaText={ctaText}
       showDiscount={showDiscount}
