@@ -60,6 +60,7 @@ export default async function Page() {
     try {
       const vwo = await getVwoClient();
       const flag = await vwo.getFlag("newCtaExperience", userContext);
+      console.log("flag",flag)
 
       console.log("VWO FLAG DEBUG:", {
         enabled: flag?.isEnabled?.(),
@@ -68,10 +69,10 @@ export default async function Page() {
 
       isNewCTAEnabled = flag?.isEnabled?.() ?? false;
 
-      ctaText = flag?.getVariable?.("cta_text", ctaText) ?? ctaText;
+      ctaText = flag?.getVariable?.("headlineCtaText", ctaText) ?? ctaText;
 
       showDiscount =
-        flag?.getVariable?.("show_discount", showDiscount) ?? showDiscount;
+        flag?.getVariable?.("shouldShowDiscount", showDiscount) ?? showDiscount;
     } catch (err) {
       console.warn("VWO flag error, using defaults", err);
     }

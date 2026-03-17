@@ -69,6 +69,7 @@ export default function HomeClient({
 
         {/* Test: CTA Button color/text */}
         <button
+          id="button-top-cta"
           style={{
             padding: "1rem 2rem",
             fontSize: "1.1rem",
