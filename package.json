@@ -9,18 +9,18 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "contentful": "11.10.5",
+    "contentful": "11.10.6",
     "dotenv": "17.3.1",
-    "flags": "4.0.3",
-    "next": "16.1.6",
+    "flags": "4.0.5",
+    "next": "16.1.7",
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "vwo-fme-node-sdk": "1.40.1",
     "vwo-smartcode-nextjs": "1.4.2"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "3.3.4",
-    "eslint": "10.0.2",
-    "eslint-config-next": "16.1.6"
+    "@eslint/eslintrc": "3.3.5",
+    "eslint": "10.0.3",
+    "eslint-config-next": "16.1.7"
   }
 }
