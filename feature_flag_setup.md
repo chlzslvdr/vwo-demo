@@ -23,9 +23,9 @@ Add the following variables to control the CTA behavior dynamically:
 
 | Variable Name | Type | Default Value  | Description |
 |---|---|---|---|
-| isEnabled |  Boolean | true  | Enables the new CTA experience  |
-| cta_text  | String  | Get Instant Access  |  CTA button text |
-| show_discount  |  Boolean |  true | Controls discount badge visibility  |
+| isFeatureEnabled |  Boolean | true  | Enables the new CTA experience  |
+| headlineCtaText  | String  | Optimize the Way You Work  |  CTA button text |
+| shouldShowDiscount  |  Boolean |  true | Controls discount badge visibility  |
 
 
 Make sure each variable is saved after creation.
