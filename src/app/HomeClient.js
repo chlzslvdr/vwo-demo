@@ -81,7 +81,7 @@ export default function HomeClient({
           }}
           onClick={() => alert("Top Button Clicked!")}
         >
-          Get Started
+          {isNewCTAEnabled ? ctaText : "Get Started"}
         </button>
       </header>
 
@@ -169,7 +169,7 @@ export default function HomeClient({
           }}
           onClick={() => alert("Bottom Button Clicked!")}
         >
-          {isNewCTAEnabled ? ctaText : "Get Started"}
+          Begin Now
         </button>
 
         {isNewCTAEnabled && showDiscount && (

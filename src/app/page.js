@@ -21,7 +21,7 @@ export default async function Page() {
     }
   }
 
-  const userContext = { id: String(userId) };
+  const userContext = { id: userId.toString() };
 
   /* -------------------------
      FETCH CONTENTFUL CONTENT
@@ -54,25 +54,35 @@ export default async function Page() {
 
   if (process.env.NODE_ENV === "development") {
     isNewCTAEnabled = true;
-    ctaText = "Get Started Now!";
+    ctaText = "Launch Now";
     showDiscount = true;
   } else {
     try {
       const vwo = await getVwoClient();
-      const flag = await vwo.getFlag("newCtaExperience", userContext);
-      console.log("flag",flag)
 
-      console.log("VWO FLAG DEBUG:", {
-        enabled: flag?.isEnabled?.(),
+      const flag = await vwo.getFlag("newCtaExperience", userContext);
+
+      console.info("🧪 VWO FLAG RAW:", flag);
+
+      if (!flag) {
+        console.error("❌ Flag not found in VWO: newCtaExperience");
+      }
+
+      console.info("🧪 VWO FLAG DEBUG:", {
+        enabled: flag?.isFeatureEnabled?.(),
         userId: userContext.id,
+        ctaText: flag?.getVariable?.("headlineCtaText"),
+        showDiscount: flag?.getVariable?.("shouldShowDiscount"),
       });
 
-      isNewCTAEnabled = flag?.isEnabled?.() ?? false;
+      isNewCTAEnabled = flag?.isFeatureEnabled?.() ?? false;
 
-      ctaText = flag?.getVariable?.("headlineCtaText", ctaText) ?? ctaText;
+      ctaText =
+        flag?.getVariable?.("headlineCtaText", ctaText) ?? ctaText;
 
       showDiscount =
-        flag?.getVariable?.("shouldShowDiscount", showDiscount) ?? showDiscount;
+        flag?.getVariable?.("shouldShowDiscount", showDiscount) ??
+        showDiscount;
     } catch (err) {
       console.warn("VWO flag error, using defaults", err);
     }
