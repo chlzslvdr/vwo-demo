@@ -1,46 +1,36 @@
-export const dynamic = "force-dynamic";
-
 import HomeClient from "./HomeClient";
-import { newCTAExperience } from "@/flags/newCTAExperience";
+import { getVwoClient } from "@/lib/vwoFME";
+import { contentfulClient } from "@/lib/contentful";
 import { cookies } from "next/headers";
 import crypto from "crypto";
 
 export default async function Page() {
-  // ---------------------------
-  // 1️⃣ Get or generate a stable user ID (server-side)
-  // ---------------------------
-  let userId;
-  try {
-    const cookieStore = await cookies();
-    const cookie = cookieStore.get("vwo_user_id");
-    userId = cookie?.value ?? crypto.randomUUID();
-  } catch (err) {
-    console.warn("Error reading cookies, generating fallback userId:", err);
-    userId = crypto.randomUUID();
-  }
+  const cookieStore = await cookies();
+  let userId = cookieStore.get("vwo_user_id")?.value;
 
-  // Optional: fallback to /api/userId if needed
   if (!userId) {
     try {
-      const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
-      const res = await fetch(`${baseUrl}/api/userId`, { cache: "no-store" });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL || ""}/api/userId`,
+        { cache: "no-store" }
+      );
       const data = await res.json();
-      userId = data.userId;
+      userId = data?.userId;
     } catch {
       userId = crypto.randomUUID();
     }
   }
 
-  const userContext = { id: userId };
+  const userContext = { id: String(userId) };
 
-  // ---------------------------
-  // 2️⃣ Fetch Contentful content safely
-  // ---------------------------
+  /* -------------------------
+     FETCH CONTENTFUL CONTENT
+  --------------------------*/
+
   let headline = "Welcome";
   let ctaText = "Get Started";
 
   try {
-    const { contentfulClient } = await import("@/lib/contentful");
     const entries = await contentfulClient.getEntries({
       content_type: "landingPage",
       limit: 1,
@@ -52,29 +42,41 @@ export default async function Page() {
       ctaText = fields.ctaText ?? ctaText;
     }
   } catch (err) {
-    console.warn("Contentful fetch failed, using defaults:", err);
+    console.warn("Contentful fetch failed", err);
   }
 
-  // ---------------------------
-  // 3️⃣ Evaluate VWO FME flags safely
-  // ---------------------------
+  /* -------------------------
+     VWO FEATURE FLAG
+  --------------------------*/
+
   let isNewCTAEnabled = false;
   let showDiscount = false;
 
-  try {
-    const flagData = await newCTAExperience.decide({ context: userContext });
-    isNewCTAEnabled = flagData?.enabled ?? false;
-    ctaText = flagData?.headlineCtaText ?? ctaText;
-    showDiscount = flagData?.shouldShowDiscount ?? false;
-  } catch (err) {
-    console.warn("VWO FME evaluation failed, using defaults:", err);
-    isNewCTAEnabled = false;
-    showDiscount = false;
+  if (process.env.NODE_ENV === "development") {
+    isNewCTAEnabled = true;
+    ctaText = "Launch Today";
+    showDiscount = true;
+  } else {
+    try {
+      const vwo = await getVwoClient();
+      const flag = await vwo.getFlag("newCtaExperience", userContext);
+
+      console.log("VWO FLAG DEBUG:", {
+        enabled: flag?.isEnabled?.(),
+        userId: userContext.id,
+      });
+
+      isNewCTAEnabled = flag?.isEnabled?.() ?? false;
+
+      ctaText = flag?.getVariable?.("headlineCtaText", ctaText) ?? ctaText;
+
+      showDiscount =
+        flag?.getVariable?.("shouldShowDiscount", showDiscount) ?? showDiscount;
+    } catch (err) {
+      console.warn("VWO flag error, using defaults", err);
+    }
   }
 
-  // ---------------------------
-  // 4️⃣ Render client component
-  // ---------------------------
   return (
     <HomeClient
       userContext={userContext}
