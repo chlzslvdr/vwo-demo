@@ -6,15 +6,21 @@ export const newCTAExperience = flag({
   async decide({ context }) {
     try {
       const vwo = await getVwoClient();
+
+      // vwo might fail if keys are invalid
       const vwoFlag = await vwo.getFlag("newCtaExperience", context);
 
       return {
-        enabled: vwoFlag?.isFeatureEnabled() ?? false,
-        headlineCtaText: vwoFlag?.getVariable("headlineCtaText", "Launch My Trial"),
-        shouldShowDiscount: vwoFlag?.getVariable("shouldShowDiscount", false),
+        enabled: vwoFlag?.isFeatureEnabled?.() ?? false,
+        headlineCtaText: vwoFlag?.getVariable?.("headlineCtaText", "Launch My Trial"),
+        shouldShowDiscount: vwoFlag?.getVariable?.("shouldShowDiscount", false),
       };
     } catch (err) {
-      console.error("VWO FME error:", err);
+      console.warn(
+        "VWO FME fetch failed, using default flag values (likely local/dev):",
+        err.message || err
+      );
+
       return {
         enabled: false,
         headlineCtaText: "Launch My Trial",

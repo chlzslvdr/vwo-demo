@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import HomeClient from "./HomeClient";
 import { newCTAExperience } from "@/flags/newCTAExperience";
 import { cookies } from "next/headers";
@@ -5,23 +7,26 @@ import crypto from "crypto";
 
 export default async function Page() {
   // ---------------------------
-  // 1. Get or generate a stable user ID
+  // 1️⃣ Get or generate a stable user ID (server-side)
   // ---------------------------
-  const cookieStore = cookies();
-  let userId = cookieStore.get("vwo_user_id")?.value;
+  let userId;
+  try {
+    const cookieStore = await cookies();
+    const cookie = cookieStore.get("vwo_user_id");
+    userId = cookie?.value ?? crypto.randomUUID();
+  } catch (err) {
+    console.warn("Error reading cookies, generating fallback userId:", err);
+    userId = crypto.randomUUID();
+  }
 
+  // Optional: fallback to /api/userId if needed
   if (!userId) {
     try {
-      // Use your API route to generate and set the cookie
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL || ""}/api/userId`,
-        { cache: "no-store" }
-      );
+      const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+      const res = await fetch(`${baseUrl}/api/userId`, { cache: "no-store" });
       const data = await res.json();
       userId = data.userId;
-    } catch (err) {
-      console.warn("Failed to fetch userId API, generating fallback:", err);
-      // fallback to temporary UUID if API fails
+    } catch {
       userId = crypto.randomUUID();
     }
   }
@@ -29,7 +34,7 @@ export default async function Page() {
   const userContext = { id: userId };
 
   // ---------------------------
-  // 2. Fetch Contentful content
+  // 2️⃣ Fetch Contentful content safely
   // ---------------------------
   let headline = "Welcome";
   let ctaText = "Get Started";
@@ -47,27 +52,28 @@ export default async function Page() {
       ctaText = fields.ctaText ?? ctaText;
     }
   } catch (err) {
-    console.warn("Contentful fetch failed:", err);
+    console.warn("Contentful fetch failed, using defaults:", err);
   }
 
   // ---------------------------
-  // 3. Evaluate VWO feature flag
+  // 3️⃣ Evaluate VWO FME flags safely
   // ---------------------------
   let isNewCTAEnabled = false;
   let showDiscount = false;
 
   try {
-    const flagData = await newCTAExperience.evaluate({ context: userContext });
-
-    isNewCTAEnabled = flagData.enabled ?? false;
-    ctaText = flagData.headlineCtaText ?? ctaText;
-    showDiscount = flagData.shouldShowDiscount ?? showDiscount;
+    const flagData = await newCTAExperience.decide({ context: userContext });
+    isNewCTAEnabled = flagData?.enabled ?? false;
+    ctaText = flagData?.headlineCtaText ?? ctaText;
+    showDiscount = flagData?.shouldShowDiscount ?? false;
   } catch (err) {
-    console.warn("VWO flag evaluation failed, using defaults:", err);
+    console.warn("VWO FME evaluation failed, using defaults:", err);
+    isNewCTAEnabled = false;
+    showDiscount = false;
   }
 
   // ---------------------------
-  // 4. Render client component
+  // 4️⃣ Render client component
   // ---------------------------
   return (
     <HomeClient
