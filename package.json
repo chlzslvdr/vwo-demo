@@ -11,7 +11,7 @@
   "dependencies": {
     "contentful": "11.10.6",
     "dotenv": "17.3.1",
-    "flags": "4.0.5",
+    "flags": "4.0.3",
     "next": "16.1.7",
     "react": "19.2.4",
     "react-dom": "19.2.4",
