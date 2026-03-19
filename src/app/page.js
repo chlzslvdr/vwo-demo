@@ -70,7 +70,7 @@ export default async function Page() {
     <HomeClient
       userContext={userContext}
       headline={headline}
-      isNewCTAEnabled={isNewCTAEnabled}
+      isFlagActive={isNewCTAEnabled}
       ctaText={ctaText}
       showDiscount={showDiscount}
     />

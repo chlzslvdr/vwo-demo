@@ -7,6 +7,7 @@ export default function HomeClient({
   ctaText,
   showDiscount,
   headline,
+  isFlagActive,
 }) {
   useEffect(() => {
     if (!userContext?.id) return;
@@ -82,6 +83,17 @@ export default function HomeClient({
         >
           {ctaText}
         </button>
+
+        {isFlagActive && (
+          <div
+            style={{
+              marginTop: "1rem",
+              fontSize: "0.75rem",
+            }}
+          >
+            🟠 Feature Flag is on!
+          </div>
+        )}
       </header>
 
       {/* Features Section */}
