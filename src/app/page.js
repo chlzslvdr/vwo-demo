@@ -33,7 +33,7 @@ export default async function Page() {
 
     if (entries.items.length) {
       const fields = entries.items[0].fields;
-      headline = fields.headline ?? headline;
+      headlineText = fields.headline ?? headline;
       ctaText = fields.ctaText ?? ctaText;
     }
   } catch (err) {
@@ -55,6 +55,7 @@ export default async function Page() {
       isNewCTAEnabled = flag?.isEnabled?.() ?? false;
 
       if (isNewCTAEnabled) {
+        headline = flag.getVariable("headlineText") ?? headline;
         ctaText = flag.getVariable("headlineCtaText") ?? ctaText;
         showDiscount = flag.getVariable("shouldShowDiscount") ?? false;
       }
