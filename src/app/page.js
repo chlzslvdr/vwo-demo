@@ -1,27 +1,32 @@
 import HomeClient from "./HomeClient";
 import { getVwoClient } from "@/lib/vwoFME";
 import { contentfulClient } from "@/lib/contentful";
-import { cookies } from "next/headers";
 import crypto from "crypto";
 
 export default async function Page() {
-  const cookieStore = await cookies();
-  let userId = cookieStore.get("vwo_user_id")?.value;
+  /* -------------------------
+     USER ID (SAFE METHOD)
+  --------------------------*/
+
+  let userId;
+
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL || ""}/api/userId`,
+      { cache: "no-store" },
+    );
+
+    const data = await res.json();
+    userId = data?.userId;
+  } catch {}
 
   if (!userId) {
-    try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL || ""}/api/userId`,
-        { cache: "no-store" }
-      );
-      const data = await res.json();
-      userId = data?.userId;
-    } catch {
-      userId = crypto.randomUUID();
-    }
+    userId = crypto.randomUUID();
   }
 
-  const userContext = { id: String(userId) };
+  const userContext = {
+    id: userId,
+  };
 
   /* -------------------------
      FETCH CONTENTFUL CONTENT
@@ -52,29 +57,27 @@ export default async function Page() {
   let isNewCTAEnabled = false;
   let showDiscount = false;
 
-  if (process.env.NODE_ENV === "development") {
-    isNewCTAEnabled = true;
-    ctaText = "Launch Today";
-    showDiscount = true;
-  } else {
-    try {
-      const vwo = await getVwoClient();
-      const flag = await vwo.getFlag("newCtaExperience", userContext);
+  try {
+    const vwo = await getVwoClient();
 
-      console.log("VWO FLAG DEBUG:", {
-        enabled: flag?.isEnabled?.(),
-        userId: userContext.id,
-      });
+    if (vwo) {
+      const flag = await vwo.getFlag("newCtaExperience", userContext);
 
       isNewCTAEnabled = flag?.isEnabled?.() ?? false;
 
-      ctaText = flag?.getVariable?.("headlineCtaText", ctaText) ?? ctaText;
+      if (isNewCTAEnabled) {
+        ctaText = flag.getVariable("headlineCtaText") ?? ctaText;
 
-      showDiscount =
-        flag?.getVariable?.("shouldShowDiscount", showDiscount) ?? showDiscount;
-    } catch (err) {
-      console.warn("VWO flag error, using defaults", err);
+        showDiscount = flag.getVariable("shouldShowDiscount") ?? false;
+      }
+
+      console.log("VWO DEBUG:", {
+        userId: userContext.id,
+        enabled: isNewCTAEnabled,
+      });
     }
+  } catch (err) {
+    console.warn("VWO flag error", err);
   }
 
   return (

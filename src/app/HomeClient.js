@@ -6,8 +6,7 @@ export default function HomeClient({
   userContext,
   ctaText,
   showDiscount,
-  isNewCTAEnabled,
-   headline,
+  headline,
 }) {
   useEffect(() => {
     if (!userContext?.id) return;
@@ -81,7 +80,7 @@ export default function HomeClient({
           }}
           onClick={() => alert("Top Button Clicked!")}
         >
-          {isNewCTAEnabled ? ctaText : "Get Started"}
+          {ctaText}
         </button>
       </header>
 
@@ -169,10 +168,10 @@ export default function HomeClient({
           }}
           onClick={() => alert("Bottom Button Clicked!")}
         >
-          Begin Now
+          Launch Your Free Trial
         </button>
 
-        {isNewCTAEnabled && showDiscount && (
+        {showDiscount && (
           <p id="discount-label" style={{ marginTop: "1rem", color: "green" }}>
             🎉 Limited-time discount available!
           </p>

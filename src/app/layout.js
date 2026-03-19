@@ -9,7 +9,10 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
-        <VWOScript accountId={process.env.VWO_ACCOUNT_ID} />
+        <VWOScript
+          accountId={process.env.NEXT_PUBLIC_VWO_ACCOUNT_ID}
+          strategy="beforeInteractive"
+        />
       </head>
       <body>{children}</body>
     </html>
