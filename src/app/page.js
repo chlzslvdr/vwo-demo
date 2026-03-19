@@ -5,33 +5,23 @@ import crypto from "crypto";
 
 export default async function Page() {
   /* -------------------------
-     USER ID (SAFE METHOD)
+     USER ID
   --------------------------*/
-
-  let userId;
+  let userId = crypto.randomUUID();
 
   try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL || ""}/api/userId`,
-      { cache: "no-store" },
-    );
-
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/userId`, { cache: "no-store" });
     const data = await res.json();
-    userId = data?.userId;
-  } catch {}
-
-  if (!userId) {
-    userId = crypto.randomUUID();
+    if (data?.userId) userId = data.userId;
+  } catch (err) {
+    console.warn("UserID fetch failed", err);
   }
 
-  const userContext = {
-    id: userId,
-  };
+  const userContext = { id: userId };
 
   /* -------------------------
-     FETCH CONTENTFUL CONTENT
+     FETCH CONTENTFUL
   --------------------------*/
-
   let headline = "Welcome";
   let ctaText = "Get Started";
 
@@ -53,7 +43,6 @@ export default async function Page() {
   /* -------------------------
      VWO FEATURE FLAG
   --------------------------*/
-
   let isNewCTAEnabled = false;
   let showDiscount = false;
 
@@ -67,14 +56,10 @@ export default async function Page() {
 
       if (isNewCTAEnabled) {
         ctaText = flag.getVariable("headlineCtaText") ?? ctaText;
-
         showDiscount = flag.getVariable("shouldShowDiscount") ?? false;
       }
 
-      console.log("VWO DEBUG:", {
-        userId: userContext.id,
-        enabled: isNewCTAEnabled,
-      });
+      console.log("VWO DEBUG:", { userId, enabled: isNewCTAEnabled });
     }
   } catch (err) {
     console.warn("VWO flag error", err);
