@@ -33,7 +33,7 @@ export default async function Page() {
 
     if (entries.items.length) {
       const fields = entries.items[0].fields;
-      headlineText = fields.headline ?? headline;
+      headline = fields.headline ?? headline;
       ctaText = fields.ctaText ?? ctaText;
     }
   } catch (err) {
