@@ -1,4 +1,4 @@
-# VWO A/B Testing Practice Site (Next.js App Router)
+# VWO Practice Site (Next.js App Router)
 
 This is a dummy landing page built with **Next.js App Router** for experimenting with [Visual Website Optimizer (VWO)](https://vwo.com).  
 It contains multiple **testable elements** so you can run variations and learn CRO (Conversion Rate Optimization) basics.
@@ -48,8 +48,6 @@ npm run dev
 
 Visit: http://localhost:3000
 
-Note: VWO may not track on localhost. Deploy to Vercel for full testing.
-
 ## Example VWO Tests to Try
 
 1. Headline Variation
@@ -66,3 +64,10 @@ Note: VWO may not track on localhost. Deploy to Vercel for full testing.
 6. CTA Placement
     - Top-only vs. Top + Bottom
 
+
+## Documentations
+
+1. [How to Run VWO on Your Local Machine?](https://help.vwo.com/hc/en-us/articles/900000745126-How-to-Run-VWO-on-Your-Local-Machine)
+2. [Contentful Setup](https://github.com/chlzslvdr/vwo-demo/blob/main/contentful_model.md)
+3. [Configuring VWO Feature Flag](https://github.com/chlzslvdr/vwo-demo/blob/main/feature_flag_setup.md)
+4. [Integrating VWO With Contentful](https://help.vwo.com/hc/en-us/articles/4404205211929-Integrating-VWO-With-Contentful)

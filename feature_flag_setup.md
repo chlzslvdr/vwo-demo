@@ -24,7 +24,7 @@ Add the following variables to control the CTA behavior dynamically:
 | Variable Name | Type | Default Value  | Description |
 |---|---|---|---|
 | headlineText  | String  | Work Smarter, Not Harder  |  Headline text |
-| headlineCtaText  | String  | Start My Free Trial  |  CTA button text |
+| headlineCtaText  | String  | Take the next step  |  CTA button text |
 | shouldShowDiscount  |  Boolean |  true | Controls discount badge visibility  |
 
 

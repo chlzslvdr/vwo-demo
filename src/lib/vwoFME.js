@@ -18,9 +18,6 @@ export async function getVwoClient() {
     vwoClient = await init({
       accountId,
       sdkKey,
-      logger: {
-        level: 'DEBUG',
-      },
     });
 
     console.log("✅ VWO SDK initialized successfully");
