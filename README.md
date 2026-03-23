@@ -19,6 +19,11 @@ It contains multiple **testable elements** so you can run variations and learn C
 - [Flags SDK](https://flags-sdk.dev) - feature flags toolkit
 - [Contentful VWO Integration](https://www.contentful.com/marketplace/vwo)
 
+## Pre Requisites
+
+- [Setup Contentful Model](https://github.com/chlzslvdr/vwo-demo/blob/main/contentful_model.md)
+- [Configure VWO Feature Flag](https://github.com/chlzslvdr/vwo-demo/blob/main/feature_flag_setup.md)
+
 ## Getting Started
 
 ### 1. Clone the repo
@@ -68,6 +73,4 @@ Visit: http://localhost:3000
 ## Documentations
 
 1. [How to Run VWO on Your Local Machine?](https://help.vwo.com/hc/en-us/articles/900000745126-How-to-Run-VWO-on-Your-Local-Machine)
-2. [Contentful Setup](https://github.com/chlzslvdr/vwo-demo/blob/main/contentful_model.md)
-3. [Configuring VWO Feature Flag](https://github.com/chlzslvdr/vwo-demo/blob/main/feature_flag_setup.md)
-4. [Integrating VWO With Contentful](https://help.vwo.com/hc/en-us/articles/4404205211929-Integrating-VWO-With-Contentful)
+2. [Integrating VWO With Contentful](https://help.vwo.com/hc/en-us/articles/4404205211929-Integrating-VWO-With-Contentful)
