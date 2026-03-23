@@ -1,6 +1,7 @@
 import HomeClient from "./HomeClient";
-import { getVwoClient } from "@/lib/vwoFME";
-import { contentfulClient } from "@/lib/contentful";
+import { getVwoClient } from "@/lib/vwo/vwoFME";
+import { getFeatureFlags } from "@/lib/vwo/featureFlags";
+import { contentfulClient } from "@/lib/contentful/index";
 import crypto from "crypto";
 
 export default async function Page() {
@@ -10,7 +11,10 @@ export default async function Page() {
   let userId = crypto.randomUUID();
 
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/userId`, { cache: "no-store" });
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/userId`,
+      { cache: "no-store" }
+    );
     const data = await res.json();
     if (data?.userId) userId = data.userId;
   } catch (err) {
@@ -24,14 +28,15 @@ export default async function Page() {
   --------------------------*/
   let headline = "Welcome";
   let ctaText = "Get Started";
-  let subHeading = "Experience the best of our platform with personalized content just for you.";
+  let subHeading =
+    "Experience the best of our platform with personalized content just for you.";
   let features = [
     {
       icon: "✅",
       featureTitle: "Easy to Use",
       featureDesc: "A simple interface that gets you working in seconds.",
-    }
-  ]
+    },
+  ];
   let testimonialQuote = "This product changed my life!";
   let testimonialAuthor = "Alex Johnson";
 
@@ -56,7 +61,7 @@ export default async function Page() {
   }
 
   /* -------------------------
-     VWO FEATURE FLAG
+     VWO FEATURE FLAGS
   --------------------------*/
   let isNewCTAEnabled = false;
   let showDiscount = false;
@@ -65,22 +70,25 @@ export default async function Page() {
     const vwo = await getVwoClient();
 
     if (vwo) {
-      const flag = await vwo.getFlag("newCtaExperience", userContext);
+      const flags = await getFeatureFlags(vwo, userContext);
 
-      isNewCTAEnabled = flag?.isEnabled?.() ?? false;
+      const newCTA = flags.newCtaExperience || {};
+
+      isNewCTAEnabled = newCTA.enabled ?? false;
 
       if (isNewCTAEnabled) {
-        headline = flag.getVariable("headlineText") ?? headline;
-        ctaText = flag.getVariable("headlineCtaText") ?? ctaText;
-        showDiscount = flag.getVariable("shouldShowDiscount") ?? false;
+        headline = newCTA.variables?.headlineText ?? headline;
+        ctaText = newCTA.variables?.headlineCtaText ?? ctaText;
+        showDiscount = newCTA.variables?.shouldShowDiscount ?? false;
       }
-
-      console.log("VWO DEBUG:", { userId, enabled: isNewCTAEnabled });
     }
   } catch (err) {
     console.warn("VWO flag error", err);
   }
 
+  /* -------------------------
+     RENDER
+  --------------------------*/
   return (
     <HomeClient
       userContext={userContext}

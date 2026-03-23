@@ -9,10 +9,11 @@ export async function getVwoClient() {
   const sdkKey = process.env.VWO_SDK_KEY;
 
   if (!accountId || !sdkKey) {
-    console.error("❌ VWO INIT ERROR: Missing server-side env variables");
-    console.error({ accountId, sdkKey });
-    return null;
+  if (process.env.NODE_ENV !== "production") {
+    console.warn("⚠️ VWO disabled: Missing env variables");
   }
+  return null;
+}
 
   try {
     vwoClient = await init({
@@ -20,7 +21,7 @@ export async function getVwoClient() {
       sdkKey,
     });
 
-    console.log("✅ VWO SDK initialized successfully");
+    console.info("✅ VWO SDK initialized successfully");
     return vwoClient;
   } catch (err) {
     console.error("❌ VWO INIT ERROR:", err);
