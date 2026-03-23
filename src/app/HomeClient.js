@@ -4,10 +4,14 @@ import { useEffect } from "react";
 
 export default function HomeClient({
   userContext,
+  isFlagActive,
+  headline,
+  subHeading,
   ctaText,
   showDiscount,
-  headline,
-  isFlagActive,
+  features,
+  testimonialQuote,
+  testimonialAuthor,
 }) {
   useEffect(() => {
     if (!userContext?.id) return;
@@ -42,6 +46,7 @@ export default function HomeClient({
     >
       {/* Hero Section */}
       <header
+        id="header"
         style={{
           padding: "4rem 2rem",
           textAlign: "center",
@@ -56,6 +61,7 @@ export default function HomeClient({
 
         {/* Test: Subheading text */}
         <p
+          id="subheading"
           style={{
             fontSize: "1.2rem",
             maxWidth: "600px",
@@ -63,8 +69,7 @@ export default function HomeClient({
             lineHeight: 1.5,
           }}
         >
-          Join thousands who have transformed their workflow with our
-          easy-to-use, lightning-fast, and secure tool.
+          {subHeading}
         </p>
 
         {/* Test: CTA Button color/text */}
@@ -86,18 +91,20 @@ export default function HomeClient({
 
         {isFlagActive && (
           <div
+            id="vwo-flag-indicator"
             style={{
               marginTop: "1rem",
               fontSize: "0.75rem",
             }}
           >
-            🟠 Feature Flag is on!
+            🟠 VWO Feature Flag is on!
           </div>
         )}
       </header>
 
       {/* Features Section */}
       <section
+        id="features"
         style={{
           padding: "3rem 2rem",
           maxWidth: "900px",
@@ -106,24 +113,9 @@ export default function HomeClient({
           gap: "1.5rem",
         }}
       >
-        {[
-          {
-            icon: "✅",
-            title: "Easy to Use",
-            desc: "A simple interface that gets you working in seconds.",
-          },
-          {
-            icon: "⚡",
-            title: "Lightning Fast",
-            desc: "Optimized performance for a smooth experience.",
-          },
-          {
-            icon: "🔒",
-            title: "Secure & Private",
-            desc: "Your data stays safe with our top-notch security.",
-          },
-        ].map((feature, i) => (
+      {features.map((feature, i) => (
           <div
+            id={`feature-${i}`}
             key={i}
             style={{
               backgroundColor: "#fff",
@@ -133,15 +125,16 @@ export default function HomeClient({
             }}
           >
             <h3 style={{ fontSize: "1.3rem", marginBottom: ".5rem" }}>
-              {feature.icon} {feature.title}
+              {feature.fields?.icon} {feature.fields?.featureTitle}
             </h3>
-            <p style={{ fontSize: "1rem", color: "#555" }}>{feature.desc}</p>
+            <p style={{ fontSize: "1rem", color: "#555" }}>{feature.fields?.featureDesc}</p>
           </div>
         ))}
       </section>
 
       {/* Testimonial Section */}
       <section
+        id="testimonial"
         style={{
           padding: "3rem 2rem",
           backgroundColor: "#ffffff",
@@ -149,6 +142,7 @@ export default function HomeClient({
         }}
       >
         <blockquote
+          id="testimonial-quote"
           style={{
             fontStyle: "italic",
             fontSize: "1.1rem",
@@ -156,15 +150,14 @@ export default function HomeClient({
             margin: "0 auto",
           }}
         >
-          &ldquo;This tool completely changed how I work. My productivity has
-          doubled!&ldquo;
+          &ldquo;{testimonialQuote}&ldquo;
         </blockquote>
-        <p style={{ marginTop: "1rem", fontWeight: "bold" }}>— Alex Johnson</p>
+        <p id="testimonial-author" style={{ marginTop: "1rem", fontWeight: "bold" }}>— {testimonialAuthor}</p>
       </section>
 
       {/* Bottom CTA */}
       <section style={{ textAlign: "center", padding: "3rem 2rem" }}>
-        <h2 style={{ fontSize: "1.8rem", marginBottom: "1rem" }}>
+        <h2 id="bottom-cta-heading" style={{ fontSize: "1.8rem", marginBottom: "1rem" }}>
           Ready to Get Started?
         </h2>
         <button
@@ -192,6 +185,7 @@ export default function HomeClient({
 
       {/* Footer */}
       <footer
+        id="footer"
         style={{
           padding: "1.5rem",
           backgroundColor: "#f1f3f5",

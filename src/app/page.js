@@ -24,6 +24,16 @@ export default async function Page() {
   --------------------------*/
   let headline = "Welcome";
   let ctaText = "Get Started";
+  let subHeading = "Experience the best of our platform with personalized content just for you.";
+  let features = [
+    {
+      icon: "✅",
+      featureTitle: "Easy to Use",
+      featureDesc: "A simple interface that gets you working in seconds.",
+    }
+  ]
+  let testimonialQuote = "This product changed my life!";
+  let testimonialAuthor = "Alex Johnson";
 
   try {
     const entries = await contentfulClient.getEntries({
@@ -33,8 +43,13 @@ export default async function Page() {
 
     if (entries.items.length) {
       const fields = entries.items[0].fields;
+
       headline = fields.headline ?? headline;
       ctaText = fields.ctaText ?? ctaText;
+      subHeading = fields.subHeading ?? subHeading;
+      features = fields.features ?? features;
+      testimonialQuote = fields.testimonialQuote ?? testimonialQuote;
+      testimonialAuthor = fields.testimonialAuthor ?? testimonialAuthor;
     }
   } catch (err) {
     console.warn("Contentful fetch failed", err);
@@ -69,10 +84,14 @@ export default async function Page() {
   return (
     <HomeClient
       userContext={userContext}
-      headline={headline}
       isFlagActive={isNewCTAEnabled}
+      headline={headline}
       ctaText={ctaText}
       showDiscount={showDiscount}
+      subHeading={subHeading}
+      features={features}
+      testimonialQuote={testimonialQuote}
+      testimonialAuthor={testimonialAuthor}
     />
   );
 }
