@@ -16,8 +16,8 @@ It contains multiple **testable elements** so you can run variations and learn C
   - Footer text
 - Simple, responsive layout for quick deployment
 - Easy integration with VWO SmartCode
-- [Flags SDK](https://flags-sdk.dev) - feature flags toolkit
 - [Contentful VWO Integration](https://www.contentful.com/marketplace/vwo)
+- VWO Feature Experimentation
 
 ## Pre Requisites
 
@@ -74,3 +74,4 @@ Visit: http://localhost:3000
 
 1. [How to Run VWO on Your Local Machine?](https://help.vwo.com/hc/en-us/articles/900000745126-How-to-Run-VWO-on-Your-Local-Machine)
 2. [Integrating VWO With Contentful](https://help.vwo.com/hc/en-us/articles/4404205211929-Integrating-VWO-With-Contentful)
+3. [Getting Started with Feature Experimentation](https://help.vwo.com/hc/en-us/articles/45633111725337-Getting-Started-with-Feature-Experimentation)
