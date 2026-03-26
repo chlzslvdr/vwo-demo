@@ -35,8 +35,7 @@ Add in `.env`:
 ```
 NEXT_PUBLIC_BASE_URL=
 NEXT_PUBLIC_VWO_ACCOUNT_ID=
-VWO_ACCOUNT_ID=
-VWO_SDK_KEY=
+NEXT_PUBLIC_VWO_SDK_KEY=
 CONTENTFUL_SPACE_ID=
 CONTENTFUL_DELIVERY_TOKEN=
 ```
@@ -75,3 +74,6 @@ Visit: http://localhost:3000
 1. [How to Run VWO on Your Local Machine?](https://help.vwo.com/hc/en-us/articles/900000745126-How-to-Run-VWO-on-Your-Local-Machine)
 2. [Integrating VWO With Contentful](https://help.vwo.com/hc/en-us/articles/4404205211929-Integrating-VWO-With-Contentful)
 3. [Getting Started with Feature Experimentation](https://help.vwo.com/hc/en-us/articles/45633111725337-Getting-Started-with-Feature-Experimentation)
+4. [VWO Feature Experimentation](https://developers.vwo.com/v2/docs/fme-overview)
+4. [VWO Feature Experimentation with Next.js](https://developers.vwo.com/v2/docs/fme-next-js)
+

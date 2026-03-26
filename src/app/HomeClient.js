@@ -1,22 +1,39 @@
 "use client";
 
 import { useEffect } from "react";
+import { useGetFlag } from "vwo-fme-react-sdk";
 
 export default function HomeClient({
   userContext,
-  isFlagActive,
-  headline,
+  headline: initialHeadline,
   subHeading,
-  ctaText,
-  showDiscount,
+  ctaText: initialCtaText,
   features,
   testimonialQuote,
   testimonialAuthor,
 }) {
+  /* -------------------------
+     VWO FLAG
+  --------------------------*/
+  const { flag, isReady } = useGetFlag("newCtaExperience");
+
+  let headline = initialHeadline;
+  let ctaText = initialCtaText;
+  let showDiscount = false;
+  let isFlagActive = false;
+
+  if (isReady && flag?.enabled) {
+    isFlagActive = true;
+    headline = flag.variables?.headlineText ?? headline;
+    ctaText = flag.variables?.headlineCtaText ?? ctaText;
+    showDiscount = flag.variables?.shouldShowDiscount ?? false;
+  }
+
+  /* -------------------------
+     TRACK EVENT
+  --------------------------*/
   useEffect(() => {
     if (!userContext?.id) return;
-
-    if (typeof window === "undefined") return;
 
     const track = () => {
       if (window.VWO?.event?.track) {
@@ -28,7 +45,7 @@ export default function HomeClient({
 
     const interval = setInterval(() => {
       if (window.VWO?.event?.track) {
-        window.VWO.event.track("pageVisits", userContext);
+        track();
         clearInterval(interval);
       }
     }, 300);
@@ -54,12 +71,10 @@ export default function HomeClient({
           boxShadow: "0 2px 6px rgba(0,0,0,0.05)",
         }}
       >
-        {/* Test: Headline text */}
         <h1 id="headline" style={{ fontSize: "2.5rem", marginBottom: "1rem" }}>
           {headline}
         </h1>
 
-        {/* Test: Subheading text */}
         <p
           id="subheading"
           style={{
@@ -72,7 +87,6 @@ export default function HomeClient({
           {subHeading}
         </p>
 
-        {/* Test: CTA Button color/text */}
         <button
           id="button-top-cta"
           style={{
@@ -113,7 +127,7 @@ export default function HomeClient({
           gap: "1.5rem",
         }}
       >
-      {features.map((feature, i) => (
+        {features.map((feature, i) => (
           <div
             id={`feature-${i}`}
             key={i}
@@ -127,7 +141,9 @@ export default function HomeClient({
             <h3 style={{ fontSize: "1.3rem", marginBottom: ".5rem" }}>
               {feature.fields?.icon} {feature.fields?.featureTitle}
             </h3>
-            <p style={{ fontSize: "1rem", color: "#555" }}>{feature.fields?.featureDesc}</p>
+            <p style={{ fontSize: "1rem", color: "#555" }}>
+              {feature.fields?.featureDesc}
+            </p>
           </div>
         ))}
       </section>
@@ -150,16 +166,26 @@ export default function HomeClient({
             margin: "0 auto",
           }}
         >
-          &ldquo;{testimonialQuote}&ldquo;
+          &ldquo;{testimonialQuote}&rdquo;
         </blockquote>
-        <p id="testimonial-author" style={{ marginTop: "1rem", fontWeight: "bold" }}>— {testimonialAuthor}</p>
+
+        <p
+          id="testimonial-author"
+          style={{ marginTop: "1rem", fontWeight: "bold" }}
+        >
+          — {testimonialAuthor}
+        </p>
       </section>
 
       {/* Bottom CTA */}
       <section style={{ textAlign: "center", padding: "3rem 2rem" }}>
-        <h2 id="bottom-cta-heading" style={{ fontSize: "1.8rem", marginBottom: "1rem" }}>
+        <h2
+          id="bottom-cta-heading"
+          style={{ fontSize: "1.8rem", marginBottom: "1rem" }}
+        >
           Ready to Get Started?
         </h2>
+
         <button
           id="button-bottom-cta"
           style={{

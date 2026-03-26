@@ -1,25 +1,29 @@
 import { NextResponse } from "next/server";
-import { cookies } from "next/headers";
 import crypto from "crypto";
 
-export async function GET() {
-  const cookieStore = await cookies();
+export async function GET(req) {
+  const cookieHeader = req.headers.get("cookie") || "";
+  let existingUserId;
 
-  let userId = cookieStore.get("vwo_user_id")?.value;
+  cookieHeader.split(";").forEach((c) => {
+    const [name, value] = c.trim().split("=");
+    if (name === "vwo_user_id") existingUserId = value;
+  });
 
-  if (!userId) {
-    userId = crypto.randomUUID();
+  const userId = existingUserId || crypto.randomUUID();
 
-    const response = NextResponse.json({ userId });
+  const response = NextResponse.json({ userId });
 
-    response.cookies.set("vwo_user_id", userId, {
+  if (!existingUserId) {
+    response.cookies.set({
+      name: "vwo_user_id",
+      value: userId,
       path: "/",
       httpOnly: false,
-      maxAge: 60 * 60 * 24 * 30,
+      sameSite: "lax",
+      maxAge: 60 * 60 * 24 * 30, // 30 days
     });
-
-    return response;
   }
 
-  return NextResponse.json({ userId });
+  return response;
 }
