@@ -71,10 +71,12 @@ export default function HomeClient({
           boxShadow: "0 2px 6px rgba(0,0,0,0.05)",
         }}
       >
+        {/* Test: Headline text */}
         <h1 id="headline" style={{ fontSize: "2.5rem", marginBottom: "1rem" }}>
           {headline}
         </h1>
 
+        {/* Test: Subheading text */}
         <p
           id="subheading"
           style={{
@@ -87,6 +89,7 @@ export default function HomeClient({
           {subHeading}
         </p>
 
+        {/* Test: CTA Button color/text */}
         <button
           id="button-top-cta"
           style={{
